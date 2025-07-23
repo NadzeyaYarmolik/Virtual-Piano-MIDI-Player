@@ -1,0 +1,12 @@
+debug/main.o
+debug/mainwindow.o
+debug/playerwindow.o
+debug/QMidiIn.o
+debug/QMidiOut.o
+debug/QMidiFile.o
+debug/QMidi_Win32.o
+debug/qrc_img.o
+debug/qrc_sfx.o
+debug/moc_mainwindow.o
+debug/moc_playerwindow.o
+debug/moc_QMidiIn.o

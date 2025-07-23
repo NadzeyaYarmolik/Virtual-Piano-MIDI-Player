@@ -1,0 +1,12 @@
+release/main.o
+release/mainwindow.o
+release/playerwindow.o
+release/QMidiIn.o
+release/QMidiOut.o
+release/QMidiFile.o
+release/QMidi_Win32.o
+release/qrc_img.o
+release/qrc_sfx.o
+release/moc_mainwindow.o
+release/moc_playerwindow.o
+release/moc_QMidiIn.o

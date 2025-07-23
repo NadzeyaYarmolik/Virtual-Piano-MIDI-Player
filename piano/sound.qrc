@@ -1,0 +1,41 @@
+<RCC>
+    <qresource prefix="/piano">
+        <file>piano/a3.mid</file>
+        <file>piano/a-3.mid</file>
+        <file>piano/a4.mid</file>
+        <file>piano/a-4.mid</file>
+        <file>piano/a5.mid</file>
+        <file>piano/a-5.mid</file>
+        <file>piano/b3.mid</file>
+        <file>piano/b4.mid</file>
+        <file>piano/b5.mid</file>
+        <file>piano/c3.mid</file>
+        <file>piano/c-3.mid</file>
+        <file>piano/c4.mid</file>
+        <file>piano/c-4.mid</file>
+        <file>piano/c5.mid</file>
+        <file>piano/c-5.mid</file>
+        <file>piano/c6.mid</file>
+        <file>piano/d3.mid</file>
+        <file>piano/d-3.mid</file>
+        <file>piano/d4.mid</file>
+        <file>piano/d-4.mid</file>
+        <file>piano/d5.mid</file>
+        <file>piano/d-5.mid</file>
+        <file>piano/e3.mid</file>
+        <file>piano/e4.mid</file>
+        <file>piano/e5.mid</file>
+        <file>piano/f3.mid</file>
+        <file>piano/f-3.mid</file>
+        <file>piano/f4.mid</file>
+        <file>piano/f-4.mid</file>
+        <file>piano/f5.mid</file>
+        <file>piano/f-5.mid</file>
+        <file>piano/g3.mid</file>
+        <file>piano/g-3.mid</file>
+        <file>piano/g4.mid</file>
+        <file>piano/g-4.mid</file>
+        <file>piano/g5.mid</file>
+        <file>piano/g-5.mid</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,15 @@
+sudo: false
+language: cpp
+compiler: clang
+addons:
+  apt:
+    packages:
+    - qt5-default
+    - qt5-qmake
+    - libasound2-dev
+install:
+ - cd examples/qtplaysmf/
+script:
+ - qmake --version
+ - qmake .
+ - make
