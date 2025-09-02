@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>txt/about_piano.txt</file>
+        <file>txt/about_player.txt</file>
+    </qresource>
+</RCC>

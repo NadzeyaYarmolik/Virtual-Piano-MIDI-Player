@@ -2,19 +2,38 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPropertyAnimation>
 #include <QStyle>
 #include <QComboBox>
 #include <QSoundEffect>
 #include <QPushButton>
+#include <QDial>
 #include <QTimer>
+#include <QPainter>
+#include <QLabel>
+#include <QRandomGenerator>
+#include <QGraphicsView>
+#include <QPropertyAnimation>
+#include <QStackedWidget>
+#include <QEasingCurve>
+#include <QGraphicsOpacityEffect>
+#include <QDebug>
+#include <QGraphicsItemAnimation>
+#include <QTimeLine>
 #include "thirdparty/QMidi-master/src/QMidiOut.h"
-#include <playerwindow.h>
+#include "playerwindow.h"
+#include "pianowindow.h"
+#include "mainmenuwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+class MainMenuWidget;
+class PlayerWindow;
+class PianoWindow;
 
 class MainWindow : public QMainWindow
 {
@@ -24,53 +43,56 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-// protected: //для работы с клавой
-//     void keyPressEvent(QKeyEvent *event) override;
-//     void keyReleaseEvent(QKeyEvent *event) override;
+protected:
+    //void keyPressEvent(QKeyEvent *event) override;
+    //void paintEvent(QPaintEvent *event) override;
+    //void resizeEvent(QResizeEvent *event) override;
+    //bool eventFilter(QObject *watched, QEvent *event) override; // Добавляем фильтр событий
 
 private slots:
-    void on_mute_clicked();
-    //void onVolumeChanged(int value);
-    void onInstrumentChanged(int index);
-    //void playNote(int note);
-    //void releaseNote(int note);
-    void onOctaveChanged(int octave);
+    // void on_playerButton_clicked();
+    // void on_pianoButton_clicked();
+    // void updateBackground();
+    // void createBubbles();
+    // void moveNotes();
+    // void createBigBubbles();
 
-    void on_gotoButton_clicked() {
-        playerWindow = new PlayerWindow(this);
-        playerWindow->setAttribute(Qt::WA_DeleteOnClose);
-        playerWindow->setWindowModality(Qt::ApplicationModal);
-        playerWindow->setWindowFlag(Qt::Dialog);
-        playerWindow->show();
-    }
-
-    void on_volumeBar_valueChanged(int value);
+    void showMainMenu();
+    void showPlayerWindow();
+    void showPianoWindow();
 
 private:
     Ui::MainWindow *ui;
-    bool is_mute=0;
-    int saved_volume = 50;
-    void updateVolume(int volume) {
-        if (midiOut && midiOut->isConnected()) {
-            // MIDI использует значения 0-127
-            int midiVolume = volume * 1.27;
-            midiOut->controlChange(0, 7, midiVolume);  // Канал 0, CC7 (Volume)
-        }
-    }
+    QMidiOut *midiOut = nullptr;
+    QStackedWidget *stackedWidget = nullptr;
+    QWidget *mainMenuWidget;
+    bool m_isMainMenuActive = true;
+    MainMenuWidget *mainMenu = nullptr;
 
-    QMidiOut* midiOut;
-    int currentInstrument = 0; //Acoustic Grand Piano
-    int currentOctave = 4;
-    int currentVelocity = 64;
-    void setupPianoKeys();
-    void sendNoteOn(int note);
-    void sendNoteOff(int note);
-    QMap<int, QTimer*> noteTimers;
-    QMap<int, QTimer*> fadeTimers;
-    QSet<int> pressedNotes; //сейчас задержаны
-    QMap<int, bool> activeNotes; //нажата или нет
+    void cleanupCurrentWindow();
 
-    PlayerWindow *playerWindow;
+    QSharedPointer<PlayerWindow> playerWindow;
+    QSharedPointer<PianoWindow> pianoWindow;
 
+    bool isPlayerWindowActive=0;
+    bool isPianoWindowActive=0;
+
+    //PlayerWindow *playerWindow = nullptr;
+    //PianoWindow *pianoWindow = nullptr;
+
+    // QPixmap backgroundImage;
+    // QTimer *scrollTimer;
+    // int scrollPosition = 0;
+    // int imageHeight;
+
+    // QTimer *m_createTimer;
+    // QTimer *m_moveTimer;
+    // QList<QLabel*> m_bubbles;
+    // QList<int> m_bubbleSpeeds;
+
+    // QTimer *m_bigBubbleTimer;
+    // QList<QLabel*> m_bigBubbles;
+    // QList<int> m_bigBubbleSpeeds;
 };
+
 #endif // MAINWINDOW_H

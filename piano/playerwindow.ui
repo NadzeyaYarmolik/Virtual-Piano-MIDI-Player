@@ -6,216 +6,113 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>527</width>
-    <height>295</height>
+    <width>1009</width>
+    <height>792</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>9</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>MIDI Player</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="img.qrc">
+    <normaloff>:/img/iconplayer.ico</normaloff>:/img/iconplayer.ico</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPlayerWindow {
+           background-image: url(:/img/wallpaperplayer.png);
+           background-position: center;
+           background-repeat: no-repeat;
+           background-attachment: fixed;
+        }</string>
   </property>
   <widget class="QPushButton" name="homeButton">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>41</width>
-     <height>41</height>
+     <x>30</x>
+     <y>30</y>
+     <width>101</width>
+     <height>101</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Return to Menu</string>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background: transparent;
-        border: none;
-        padding: 0px;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="img.qrc">
-     <normaloff>:/img/home.png</normaloff>:/img/home.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>40</width>
-     <height>40</height>
-    </size>
    </property>
   </widget>
   <widget class="QPushButton" name="uploadButton">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>190</y>
-     <width>41</width>
-     <height>41</height>
+     <x>340</x>
+     <y>670</y>
+     <width>101</width>
+     <height>101</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Upload track</string>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background: transparent;
-        border: none;
-        padding: 0px;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="img.qrc">
-     <normaloff>:/img/upload.png</normaloff>:/img/upload.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>40</width>
-     <height>40</height>
-    </size>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="infoButton">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>10</y>
-     <width>41</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background: transparent;
-        border: none;
-        padding: 0px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="img.qrc">
-     <normaloff>:/img/info.png</normaloff>:/img/info.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>40</width>
-     <height>40</height>
-    </size>
    </property>
   </widget>
   <widget class="QPushButton" name="prevButton">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>190</y>
-     <width>41</width>
-     <height>41</height>
+     <x>40</x>
+     <y>670</y>
+     <width>101</width>
+     <height>101</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Previous track</string>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background: transparent;
-        border: none;
-        padding: 0px;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="img.qrc">
-     <normaloff>:/img/previous.png</normaloff>:/img/previous.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>40</width>
-     <height>40</height>
-    </size>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="stopButton">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>190</y>
-     <width>41</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background: transparent;
-        border: none;
-        padding: 0px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="img.qrc">
-     <normaloff>:/img/start.png</normaloff>:/img/start.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>40</width>
-     <height>40</height>
-    </size>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pauseButton">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>190</y>
-     <width>41</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background: transparent;
-        border: none;
-        padding: 0px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="img.qrc">
-     <normaloff>:/img/play.png</normaloff>:/img/play.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>40</width>
-     <height>40</height>
-    </size>
    </property>
   </widget>
   <widget class="QPushButton" name="nextButton">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>190</y>
-     <width>41</width>
-     <height>41</height>
+     <x>440</x>
+     <y>670</y>
+     <width>101</width>
+     <height>101</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>Next track</string>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background: transparent;
-        border: none;
-        padding: 0px;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="img.qrc">
-     <normaloff>:/img/next.png</normaloff>:/img/next.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>40</width>
-     <height>40</height>
-    </size>
    </property>
   </widget>
   <widget class="QTableWidget" name="Table">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>10</y>
-     <width>271</width>
-     <height>271</height>
+     <x>600</x>
+     <y>30</y>
+     <width>381</width>
+     <height>591</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -234,78 +131,219 @@
        border: 1px solid rgba(255, 255, 255, 50);
     }</string>
    </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+   </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+   </property>
+   <property name="gridStyle">
+    <enum>Qt::PenStyle::NoPen</enum>
+   </property>
+   <property name="columnCount">
+    <number>0</number>
+   </property>
   </widget>
   <widget class="QPushButton" name="muteButton">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>240</y>
-     <width>41</width>
-     <height>41</height>
+     <x>600</x>
+     <y>670</y>
+     <width>101</width>
+     <height>101</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background: transparent;
-        border: none;
-        padding: 0px;</string>
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="img.qrc">
-     <normaloff>:/img/volume.png</normaloff>:/img/volume.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>40</width>
-     <height>40</height>
-    </size>
    </property>
   </widget>
   <widget class="QSlider" name="volumeSlider">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>250</y>
-     <width>141</width>
-     <height>18</height>
+     <x>720</x>
+     <y>700</y>
+     <width>261</width>
+     <height>41</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>100</number>
    </property>
    <property name="orientation">
     <enum>Qt::Orientation::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QLabel" name="vinylLabel">
+  <widget class="QSlider" name="progressSlider">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>30</y>
-     <width>121</width>
-     <height>121</height>
+     <x>30</x>
+     <y>610</y>
+     <width>541</width>
+     <height>18</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>1000</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Orientation::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="settingsButton">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>30</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Settings</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
    </property>
-   <property name="pixmap">
-    <pixmap resource="img.qrc">:/img/vinyl.ico</pixmap>
-   </property>
-   <property name="scaledContents">
-    <bool>true</bool>
-   </property>
   </widget>
-  <widget class="QSlider" name="progressSlider">
+  <widget class="QPushButton" name="themeButton">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>160</y>
-     <width>201</width>
-     <height>18</height>
+     <x>460</x>
+     <y>130</y>
+     <width>111</width>
+     <height>111</height>
     </rect>
    </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Horizontal</enum>
+   <property name="toolTip">
+    <string>Set theme</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="infoButton">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>130</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>About Player</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pauseButton">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>670</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Play/Pause</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="shortcut">
+    <string>Space</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="stopButton">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>670</y>
+     <width>101</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Reset to beginning</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="currentLabel">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>560</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bahnschrift</family>
+     <pointsize>18</pointsize>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Shape::NoFrame</enum>
+   </property>
+   <property name="text">
+    <string>00:00</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="totalLabel">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>560</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Bahnschrift</family>
+     <pointsize>18</pointsize>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Shape::NoFrame</enum>
+   </property>
+   <property name="text">
+    <string>00:00</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QWidget" name="visualizationWidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>240</y>
+     <width>341</width>
+     <height>341</height>
+    </rect>
    </property>
   </widget>
  </widget>
