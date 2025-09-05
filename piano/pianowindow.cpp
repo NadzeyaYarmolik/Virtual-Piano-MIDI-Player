@@ -35,10 +35,11 @@ PianoWindow::PianoWindow(QMidiOut* mainMidiOut, QWidget *parent)
             metronomeTimer->setInterval(interval);
         }
     });
-    ui->bpmSlider->setTracking(true); // Непрерывное обновление значения
 
-    // Анимация кнопки метронома
+    // Анимация кнопок
     HelperClass::setupButtonAnimation(ui->metronomeButton, ui->metronomeButton->iconSize(), 100);
+    HelperClass::setupButtonAnimation(ui->infoButton, ui->infoButton->iconSize(), 100);
+    HelperClass::setupButtonAnimation(ui->homeButton, ui->homeButton->iconSize(), 100);
 
     QPixmap background(":/img/pianobackground.jpg");// Фон
     if (!background.isNull()) {
@@ -58,6 +59,16 @@ PianoWindow::PianoWindow(QMidiOut* mainMidiOut, QWidget *parent)
     for (int i = 0; i < HelperClass::instruments.size(); ++i) {
         ui->instrumentBox->addItem(HelperClass::instruments[i], i);
     }
+
+    // Устанавливаем пианино в MIDI
+    if (midiOut->isConnected()) {
+        QMidiEvent event;
+        event.setType(QMidiEvent::ProgramChange);
+        event.setVoice(0);
+        event.setNumber(0);
+        midiOut->sendEvent(event);
+    }
+
     ui->octaveBox->setValue(currentOctave); // Установка текущей октавы
 
     connect(ui->instrumentBox, &QComboBox::currentIndexChanged,
@@ -68,7 +79,7 @@ PianoWindow::PianoWindow(QMidiOut* mainMidiOut, QWidget *parent)
 
     // Чтобы не реагировали на клаву
     ui->instrumentBox->setFocusPolicy(Qt::ClickFocus);
-    ui->octaveBox->setFocusPolicy(Qt::ClickFocus);
+    ui->octaveBox->setFocusPolicy(Qt::NoFocus);
 
     // Возврат фокуса окну после изменения инструмента
     // Обеспечивает продолжение обработки клавиатурных событий
@@ -85,6 +96,8 @@ PianoWindow::PianoWindow(QMidiOut* mainMidiOut, QWidget *parent)
                 onOctaveChanged(value);
                 this->setFocus();
             });
+
+
 
     // Настройка регулятора громкости 1-100%
     ui->volumeDial->setRange(1, 100);
@@ -138,7 +151,7 @@ void PianoWindow::closeEvent(QCloseEvent *event)
     for (auto it = activeNotes.begin(); it != activeNotes.end(); ++it) {
         if (it.value()) {
             int note = it.key();
-            int channel = (note >= 128) ? 9 : 0; // Канал (9 - ударные)
+            int channel = (note >= 128) ? 9 : 0; // Канал 9 - ударные
             if (note >= 128) note -= 128; // Коррекция номера ноты для ударных
             HelperClass::sendNoteOff(note, channel);
         }
@@ -162,7 +175,7 @@ void PianoWindow::metronomeTick()
 {
     if (!midiOut || !midiOut->isConnected()) return;
 
-    // Выбор ноты based on beat position
+    // Выбор ноты на основе beat position
     // 75 - сильная доля, 76 - слабая доля
     int note = (metronomeBeat % 4 == 0) ? 75 : 76;
     int velocity = (metronomeBeat % 4 == 0) ? 100 : 80; // Разная громкость

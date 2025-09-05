@@ -934,15 +934,20 @@ void PlayerWindow::on_volumeSlider_valueChanged(int value)
     // Если ползунок двигается не через mute то сбрасываем флаг mute
     if (is_mute && value > 0) {
         is_mute = false;
-        // иконка
-        QString themeName = getCurrentThemeName();
-        ui->muteButton->setIcon(QIcon(QString(":/img/%1/volume.png").arg(themeName)));
+
+        //ui->muteButton->setIcon(QIcon(QString(":/img/%1/volume.png").arg(themeName)));
     }
 
     if (!is_mute) {
         updateVolume(value);  // новая громкость
         saved_volume = value; // Сохраняем значение
     }
+
+    // иконка
+    QString themeName = getCurrentThemeName();
+    QString iconName = (value == 0 || is_mute) ? "mute" : "volume";
+    ui->muteButton->setIcon(QIcon(QString(":/img/%1/%2.png").arg(themeName, iconName)));
+
 }
 
 float PlayerWindow::durInSec(QMidiFile* midiFile) const {
@@ -1214,13 +1219,10 @@ void PlayerWindow::updateThemeIcons()
                      "background: transparent;"
                      "color: #1F9AFF;"
                      "border: 5px solid #CDEAFF;"
-                     "gridline-color: #CDEAFF;"
                      "}"
                      "QHeaderView::section {"
                      "background-color: #CDEAFF;"
-                     "color: #1F9AFF;"
-                     "padding: 10px;"
-                     "border: none;"
+                     "color: #1F9AFF; padding: 10px; border: none;"
                      "font-weight: bold;"
                      "}";
     }
@@ -1230,40 +1232,34 @@ void PlayerWindow::updateThemeIcons()
                      "background: transparent;"
                      "color: #0F085C;"
                      "border: 5px solid #B1D5DE;"
-                     "gridline-color: #0F085C;"
                      "}"
                      "QHeaderView::section {"
                      "background: #B1D5DE;"
-                     "color: #C22C1D;"
-                     "padding: 10px;"
-                     "border: none;"
+                     "color: #C22C1D; padding: 10px; border: none;"
                      "}";
     }
     else { // water
         labelColor = "#00B6D3";
         tableStyle = "QTableWidget {"
                      "background: transparent;"
-                     "color: #002A33;"
-                     "border: 5px solid #002A33;"
-                     "gridline-color: #002A33;"
+                     "color: #013F6E;"
+                     "border: none;"
                      "}"
                      "QHeaderView::section {"
-                     "background-color: #002A33;"
-                     "color: #00B6D3;"
-                     "padding: 10px;"
-                     "border: none;"
+                     "background-color: #013F6E;"
+                     "color: #00B6D3; padding: 10px; border: none;"
                      "}";
     }
 
     QString currentRowStyle;
     if (themeName == "modern") {
-        currentRowStyle = "QTableView::item:selected { background: #1F9AFF; color: white; }";
+        currentRowStyle = "QTableView::item:selected { color: #CDEAFF; }";
     }
     else if (themeName == "paper") {
-        currentRowStyle = "QTableView::item:selected { background: #0F085C; color: white; }";
+        currentRowStyle = "QTableView::item:selected { color: #C22C1D; }";
     }
     else { // water
-        currentRowStyle = "QTableView::item:selected { background: #002A33; color: #00B6D3; }";
+        currentRowStyle = "QTableView::item:selected { color: #00B6D3; }";
     }
 
 
@@ -1279,9 +1275,7 @@ void PlayerWindow::updateThemeIcons()
     // Настройка кнопок
     QSize iconSize(100, 100);
     QString buttonStyle = "QPushButton {"
-                          "background: transparent;"
-                          "border: none;"
-                          "}";
+                          "background: transparent; border: none; }";
 
     QList<QPushButton*> buttons = findChildren<QPushButton*>();
     foreach (QPushButton* button, buttons) {
@@ -1411,12 +1405,12 @@ QString PlayerWindow::setSliderStyleSheet() const
     }
     else if (themeName == "paper") {
         themeColors =
-            "QSlider::groove:horizontal { background: #D3D3D3; }"
-            "QSlider::sub-page:horizontal { background: #0F085C; }";
+            "QSlider::groove:horizontal { background: #B1D5DE; }"
+            "QSlider::sub-page:horizontal { background: black; }";
     }
     else { // water
         themeColors =
-            "QSlider::groove:horizontal { background: #005566; }"
+            "QSlider::groove:horizontal { background: #013F6E; }"
             "QSlider::sub-page:horizontal { background: #00B6D3; }";
     }
 
@@ -1431,14 +1425,11 @@ QString PlayerWindow::setSliderStyleSheet() const
         "    height: 6px; border-radius: 3px;"
         "}"
         "QSlider::handle:horizontal {"
-        "    width: 28px;"
-        "    height: 28px;"
-        "    margin: -11px 0;"
-        "    background: transparent;"
-        "    border: none;"
+        "    width: 28px; height: 28px; margin: -11px 0;"
+        "    background: transparent; border: none;"
         "    image: url(:/img/" + themeName + "/handle.png);"
         "    subcontrol-origin: margin; subcontrol-position: center center;"
-                      "}";
+        "}";
 
     return baseSliderStyle + themeColors;
 }
