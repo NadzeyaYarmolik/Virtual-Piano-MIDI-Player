@@ -39,15 +39,12 @@ class PlayerWindow : public QWidget
     Q_OBJECT
 
 public:
-    // ==================== КОНСТРУКТОР И ДЕСТРУКТОР ====================
     explicit PlayerWindow(QMidiOut* mainMidiOut, QWidget *parent = nullptr);
     ~PlayerWindow();
 
-    // ==================== ПУБЛИЧНЫЕ ДАННЫЕ ====================
     std::vector<std::shared_ptr<QMidiFile> > Files;  // Загруженные MIDI файлы
     QStringList Paths;                               // Пути к файлам
 
-    // ==================== ПЕРЕЧИСЛЕНИЯ ====================
     enum PlaybackMode {
         RepeatAll,    // Повтор всего плейлиста
         NoRepeat,     // Без повторения
@@ -156,14 +153,14 @@ private:
     QVector<float> Durs;                   // Длительности файлов
 
     //НАСТРОЙКИ ВОСПРОИЗВЕДЕНИЯ
-    PlaybackMode m_playbackMode = NoRepeat;  // Режим воспроизведения
-    PlaybackSpeed m_playbackSpeed;          // Скорость воспроизведения
-    SortMode m_sortMode;                    // Режим сортировки
+    PlaybackMode m_playbackMode = NoRepeat;// Режим воспроизведения
+    PlaybackSpeed m_playbackSpeed;         // Скорость воспроизведения
+    SortMode m_sortMode;                   // Режим сортировки
     Theme currentTheme = Theme::Modern;    // Текущая тема
 
     //ВИЗУАЛИЗАЦИЯ
     LedsPanel *m_visualizationPanel;       // Панель визуализации каналов
-    QVector<bool> m_channelActivity;       ///< Активность каналов
+    QVector<bool> m_channelActivity;       // Активность каналов
 
     //УПРАВЛЕНИЕ ГРОМКОСТЬЮ
     QVector<int> m_channelVolumes;         // Громкости каналов (0-127)

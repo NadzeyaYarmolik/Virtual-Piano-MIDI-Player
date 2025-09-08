@@ -8,6 +8,13 @@ PianoWindow::PianoWindow(QMidiOut* mainMidiOut, QWidget *parent)
 {
     ui->setupUi(this);
 
+    pianoKeys = {
+        ui->c4, ui->c_4, ui->d4, ui->d_4, ui->e4,
+        ui->f4, ui->f_4, ui->g4, ui->g_4, ui->a4, ui->a_4, ui->b4,
+        ui->c5, ui->c_5, ui->d5, ui->d_5, ui->e5,
+        ui->f5, ui->f_5, ui->g5, ui->g_5, ui->a5, ui->a_5, ui->b5, ui->c6
+    };
+
     // Шрифт для всего окна
     QFont pianoFont("Bahnschrift", 16, QFont::Bold);
     this->setFont(pianoFont);
@@ -41,7 +48,7 @@ PianoWindow::PianoWindow(QMidiOut* mainMidiOut, QWidget *parent)
     HelperClass::setupButtonAnimation(ui->infoButton, ui->infoButton->iconSize(), 100);
     HelperClass::setupButtonAnimation(ui->homeButton, ui->homeButton->iconSize(), 100);
 
-    QPixmap background(":/img/pianobackground.jpg");// Фон
+    QPixmap background(":/img/piano/background.jpg");// Фон
     if (!background.isNull()) {
         resize(background.size());
         setFixedSize(background.size()); // Фиксированный размер окна
@@ -76,7 +83,6 @@ PianoWindow::PianoWindow(QMidiOut* mainMidiOut, QWidget *parent)
     connect(ui->octaveBox, QOverload<int>::of(&QSpinBox::valueChanged),
             this, &PianoWindow::onOctaveChanged);
 
-
     // Чтобы не реагировали на клаву
     ui->instrumentBox->setFocusPolicy(Qt::ClickFocus);
     ui->octaveBox->setFocusPolicy(Qt::NoFocus);
@@ -97,8 +103,6 @@ PianoWindow::PianoWindow(QMidiOut* mainMidiOut, QWidget *parent)
                 this->setFocus();
             });
 
-
-
     // Настройка регулятора громкости 1-100%
     ui->volumeDial->setRange(1, 100);
     ui->volumeDial->setValue(volume);
@@ -114,11 +118,10 @@ PianoWindow::PianoWindow(QMidiOut* mainMidiOut, QWidget *parent)
     setupPianoKeys();
 
     const auto buttons = this->findChildren<QPushButton*>();
-    for (QPushButton* b : buttons) {
+    for (QPushButton* b : buttons)
         b->setFocusPolicy(Qt::NoFocus);
-    }
 
-    setupKeyboardMapping();// Настройка через native scan codes чтоб работало на любой раскладке
+    setupKeyboardMapping(); // Настройка через native scan codes чтоб работало на любой раскладке
 
     // Возврат на главный экран
     connect(ui->homeButton, &QPushButton::clicked, this, [this]() {
@@ -167,10 +170,10 @@ void PianoWindow::updateVolume(int volume)
     if (!midiOut || !midiOut->isConnected()) return;
     int midiVolume = volume * 127 / 100;
     // Установка громкости для всех 16 каналов
-    for (int channel = 0; channel < 16; ++channel) {
-        midiOut->controlChange(channel, 7, midiVolume); // CC7 - Volume
-    }
+    for (int channel = 0; channel < 16; ++channel)
+        HelperClass::sendControlChange(channel, 7, midiVolume);
 }
+
 void PianoWindow::metronomeTick()
 {
     if (!midiOut || !midiOut->isConnected()) return;
@@ -180,24 +183,12 @@ void PianoWindow::metronomeTick()
     int note = (metronomeBeat % 4 == 0) ? 75 : 76;
     int velocity = (metronomeBeat % 4 == 0) ? 100 : 80; // Разная громкость
 
-    // Отправка NoteOn сообщения
-    QMidiEvent event;
-    event.setType(QMidiEvent::NoteOn);
-    event.setNote(note);
-    event.setVoice(9); // Канал 9 - ударные
-    event.setVelocity(velocity);
-    midiOut->sendEvent(event);
+    HelperClass::sendNoteOn(note, 9, velocity); // канал 9 - ударные
 
     // Автоматическое отпускание ноты через 50ms
     // Создает короткий щелчок метронома
-    QTimer::singleShot(50, this, [this, note]() {
-        if (midiOut && midiOut->isConnected()) {
-            QMidiEvent eventOff;
-            eventOff.setType(QMidiEvent::NoteOff);
-            eventOff.setNote(note);
-            eventOff.setVoice(9);
-            midiOut->sendEvent(eventOff);
-        }
+    QTimer::singleShot(50, this, [ note]() {
+        HelperClass::sendNoteOff(note, 9); // канал 9 - ударные
     });
 
     metronomeBeat++; // Следующая доля
@@ -213,8 +204,7 @@ void PianoWindow::keyPressEvent(QKeyEvent *event)
         return;
     }
 
-    // Проверка если есть mapping у клавиши
-    if (!m_keyToButtonMap.contains(sc)) return;
+    if (!m_keyToButtonMap.contains(sc)) return; // Проверка если есть mapping у клавиши
     if (m_pressedKeys.contains(sc)) return; // Предотвратить повторную обработку
 
     m_pressedKeys.insert(sc);
@@ -262,21 +252,18 @@ void PianoWindow::on_homeButton_clicked(){
 }
 
 void PianoWindow::setupPianoKeys() {
-    QVector<QPushButton*> keys = {ui->c4, ui->c_4, ui->d4, ui->d_4, ui->e4,
-        ui->f4, ui->f_4, ui->g4, ui->g_4, ui->a4, ui->a_4, ui->b4, ui->c5, ui->c_5, ui->d5,
-        ui->d_5, ui->e5, ui->f5, ui->f_5, ui->g5, ui->g_5, ui->a5, ui->a_5, ui->b5, ui->c6};
 
     // Кнопка + MIDI-нота ударных
     drums = {{ui->bassDrum, 35}, {ui->snareDrum, 38}, {ui->highTom, 48}, {ui->midTom, 47},
     {ui->floorTom, 43}, {ui->hiHat, 46}, {ui->crashCymbal1, 49}, {ui->crashCymbal2, 57}, {ui->rideCymbal, 51}};
 
     // Настройка обработчиков для клавиш пианино
-    for (int i = 0; i < keys.size(); ++i) {
-        keys[i]->setFocusPolicy(Qt::StrongFocus);
-        keys[i]->setAutoRepeat(false);
+    for (int i = 0; i < 25; ++i) {
+        pianoKeys[i]->setFocusPolicy(Qt::StrongFocus);
+        pianoKeys[i]->setAutoRepeat(false);
 
         // Обработчик нажатия клавиши
-        connect(keys[i], &QPushButton::pressed, [this, i]() {
+        connect(pianoKeys[i], &QPushButton::pressed, [this, i]() {
             int note = i + (currentOctave + 1) * 12; // Расчет ноты
             if (!activeNotes.value(note, false)) {
                 activeNotes[note] = true;
@@ -285,7 +272,7 @@ void PianoWindow::setupPianoKeys() {
         });
 
         // Обработчик отпускания клавиши
-        connect(keys[i], &QPushButton::released, [this, i]() {
+        connect(pianoKeys[i], &QPushButton::released, [this, i]() {
             int note = i + (currentOctave + 1) * 12;
             if (activeNotes.value(note, false)) {
                 activeNotes[note] = false;
@@ -301,11 +288,11 @@ void PianoWindow::setupPianoKeys() {
     }
 
     // Настройка ударных инструментов
-    for (int i = 0; i < drums.size(); ++i) {
+    for (int i = 0; i < 9; ++i) {
         drums[i].first->setFocusPolicy(Qt::StrongFocus);
         drums[i].first->setAutoRepeat(false);
 
-        HelperClass::setupButtonAnimation(drums[i].first, drums[i].first->iconSize(), 100);
+        HelperClass::setupButtonAnimation(drums[i].first, drums[i].first->iconSize());
 
         // Нажатие на ударник
         connect(drums[i].first, &QPushButton::pressed, [this, i]() {
@@ -328,7 +315,7 @@ void PianoWindow::setupPianoKeys() {
 void PianoWindow::toggleMetronome()
 {
     if (metronomeTimer->isActive())
-        metronomeTimer->stop();// Остановка метронома
+        metronomeTimer->stop(); // Остановка метронома
     else {
         // Запуск с текущим BPM
         metronomeBeat = 0;
@@ -339,107 +326,27 @@ void PianoWindow::toggleMetronome()
     }
 }
 
-void PianoWindow::setupKeyboardMapping()
-{
+void PianoWindow::setupKeyboardMapping() {
     m_keyToButtonMap.clear();
     m_pressedKeys.clear();
 
-    // Добавление mapping
-    auto mapSc = [this](int sc, QPushButton* btn) {
-        if (!btn) return;
-        m_keyToButtonMap[sc] = btn;
-    };
+    // Основной цикл для всех клавиш
+    for (int i = 0; i < 25; ++i) {
+        if (pianoKeys[i]) // Проверка на nullptr
+            m_keyToButtonMap[pianoScanCodes[i]] = pianoKeys[i];
+    }
 
-    // Определение scan codes для клавиш
-    const int SC_Z = 0x2C;
-    const int SC_X = 0x2D;
-    const int SC_C = 0x2E;
-    const int SC_V = 0x2F;
-    const int SC_B = 0x30;
-    const int SC_N = 0x31;
-    const int SC_M = 0x32;
-    const int SC_COMMA = 0x33;
-    const int SC_Q = 0x10;
-    const int SC_W = 0x11;
-    const int SC_E = 0x12;
-    const int SC_R = 0x13;
-    const int SC_T = 0x14;
-    const int SC_Y = 0x15;
-    const int SC_U = 0x16;
-    const int SC_I = 0x17;
-
-    const int SC_S = 0x1F;
-    const int SC_D = 0x20;
-    const int SC_G = 0x22;
-    const int SC_H = 0x23;
-    const int SC_J = 0x24;
-    const int SC_2 = 0x03;
-    const int SC_3 = 0x04;
-    const int SC_5 = 0x06;
-    const int SC_6 = 0x07;
-    const int SC_7 = 0x08;
-
-    // Белые
-    mapSc(SC_Z, ui->c4);
-    mapSc(SC_X, ui->d4);
-    mapSc(SC_C, ui->e4);
-    mapSc(SC_V, ui->f4);
-    mapSc(SC_B, ui->g4);
-    mapSc(SC_N, ui->a4);
-    mapSc(SC_M, ui->b4);
-    mapSc(SC_COMMA, ui->c5);
-    mapSc(SC_Q, ui->c5);
-    mapSc(SC_W, ui->d5);
-    mapSc(SC_E, ui->e5);
-    mapSc(SC_R, ui->f5);
-    mapSc(SC_T, ui->g5);
-    mapSc(SC_Y, ui->a5);
-    mapSc(SC_U, ui->b5);
-    mapSc(SC_I, ui->c6);
-
-    // Черные
-    mapSc(SC_S, ui->c_4);
-    mapSc(SC_D, ui->d_4);
-    mapSc(SC_G, ui->f_4);
-    mapSc(SC_H, ui->g_4);
-    mapSc(SC_J, ui->a_4);
-    mapSc(SC_2, ui->c_5);
-    mapSc(SC_3, ui->d_5);
-    mapSc(SC_5, ui->f_5);
-    mapSc(SC_6, ui->g_5);
-    mapSc(SC_7, ui->a_5);
+    m_keyToButtonMap[0x10] = ui->c5; // клавиша Q для ui->c5
 }
 
 void PianoWindow::initButtonMappings()
 {
     keyToButtonMap.clear();
 
-    // Пример: связываем клавиши с кнопками из дизайнера
-    keyToButtonMap[Qt::Key_Z] = ui->c4;
-    keyToButtonMap[Qt::Key_S] = ui->c_4;
-    keyToButtonMap[Qt::Key_X] = ui->d4;
-    keyToButtonMap[Qt::Key_D] = ui->d_4;
-    keyToButtonMap[Qt::Key_C] = ui->e4;
-    keyToButtonMap[Qt::Key_V] = ui->f4;
-    keyToButtonMap[Qt::Key_G] = ui->f_4;
-    keyToButtonMap[Qt::Key_B] = ui->g4;
-    keyToButtonMap[Qt::Key_H] = ui->g_4;
-    keyToButtonMap[Qt::Key_N] = ui->a4;
-    keyToButtonMap[Qt::Key_J] = ui->a_4;
-    keyToButtonMap[Qt::Key_M] = ui->b4;
-    keyToButtonMap[Qt::Key_Comma] = ui->c5;
-    keyToButtonMap[Qt::Key_Q] = ui->c5;   // вторая клавиша для C5
-    keyToButtonMap[Qt::Key_W] = ui->d5;
-    keyToButtonMap[Qt::Key_3] = ui->d_5;
-    keyToButtonMap[Qt::Key_E] = ui->e5;
-    keyToButtonMap[Qt::Key_R] = ui->f5;
-    keyToButtonMap[Qt::Key_5] = ui->f_5;
-    keyToButtonMap[Qt::Key_T] = ui->g5;
-    keyToButtonMap[Qt::Key_6] = ui->g_5;
-    keyToButtonMap[Qt::Key_Y] = ui->a5;
-    keyToButtonMap[Qt::Key_7] = ui->a_5;
-    keyToButtonMap[Qt::Key_U] = ui->b5;
-    keyToButtonMap[Qt::Key_I] = ui->c6;
+    for (int i = 0; i < 25; ++i) // Присваивание
+        keyToButtonMap[pianoKeyKeys[i]] = pianoKeys[i];
+
+    keyToButtonMap[Qt::Key_Q] = ui->c5; // Особое присваивание для клавиши Q - переопределяем предыдущее
 }
 
 void PianoWindow::initKeyMappings()
@@ -448,51 +355,23 @@ void PianoWindow::initKeyMappings()
 
     int baseOctave = currentOctave + 1;
 
-    // Белые клавиши
-    keyToNoteMap[Qt::Key_Z] = 12 * baseOctave + 0;  // C4
-    keyToNoteMap[Qt::Key_X] = 12 * baseOctave + 2;  // D4
-    keyToNoteMap[Qt::Key_C] = 12 * baseOctave + 4;  // E4
-    keyToNoteMap[Qt::Key_V] = 12 * baseOctave + 5;  // F4
-    keyToNoteMap[Qt::Key_B] = 12 * baseOctave + 7;  // G4
-    keyToNoteMap[Qt::Key_N] = 12 * baseOctave + 9;  // A4
-    keyToNoteMap[Qt::Key_M] = 12 * baseOctave + 11; // B4
+    // Основной цикл для всех 24 клавиш
+    for (int i = 0; i < 25; ++i) {
+        int octaveOffset = i / 12;  // Каждые 12 нот увеличиваем октаву
+        int noteOffset = i % 12;    // Номер ноты внутри октавы (0-11)
 
-    // Запятая и альт-варианты
-    int c5Note = 12 * (baseOctave + 1);
-    keyToNoteMap[Qt::Key_Comma] = c5Note;
-    keyToNoteMap[Qt::Key_Period] = c5Note;  // на всякий случай
-    keyToNoteMap[Qt::Key_Less] = c5Note;    // для раскладок
+        int note = 12 * (baseOctave + octaveOffset) + noteOffset;
+        keyToNoteMap[pianoKeyKeys[i]] = note;
+    }
 
-    // Альтернативная клавиша C5 (Q)
-    keyToNoteMap[Qt::Key_Q] = c5Note;
-
-    keyToNoteMap[Qt::Key_W] = 12 * (baseOctave + 1) + 2; // D5
-    keyToNoteMap[Qt::Key_E] = 12 * (baseOctave + 1) + 4; // E5
-    keyToNoteMap[Qt::Key_R] = 12 * (baseOctave + 1) + 5; // F5
-    keyToNoteMap[Qt::Key_T] = 12 * (baseOctave + 1) + 7; // G5
-    keyToNoteMap[Qt::Key_Y] = 12 * (baseOctave + 1) + 9; // A5
-    keyToNoteMap[Qt::Key_U] = 12 * (baseOctave + 1) + 11;// B5
-    keyToNoteMap[Qt::Key_I] = 12 * (baseOctave + 2);     // C6
-
-    // Черные клавиши
-    keyToNoteMap[Qt::Key_S] = 12 * baseOctave + 1;       // C#4
-    keyToNoteMap[Qt::Key_D] = 12 * baseOctave + 3;       // D#4
-    keyToNoteMap[Qt::Key_G] = 12 * baseOctave + 6;       // F#4
-    keyToNoteMap[Qt::Key_H] = 12 * baseOctave + 8;       // G#4
-    keyToNoteMap[Qt::Key_J] = 12 * baseOctave + 10;      // A#4
-    keyToNoteMap[Qt::Key_2] = 12 * (baseOctave + 1) + 1; // C#5
-    keyToNoteMap[Qt::Key_3] = 12 * (baseOctave + 1) + 3; // D#5
-    keyToNoteMap[Qt::Key_5] = 12 * (baseOctave + 1) + 6; // F#5
-    keyToNoteMap[Qt::Key_6] = 12 * (baseOctave + 1) + 8; // G#5
-    keyToNoteMap[Qt::Key_7] = 12 * (baseOctave + 1) + 10;// A#5
+    // Особый случай: клавиша Q - дубликат для C5 (нота 60 при baseOctave = 4)
+    keyToNoteMap[Qt::Key_Q] = 12 * baseOctave + 12; // C5 (60)
 }
 
-void PianoWindow::playNote(int note, int channel, bool pressed)
-{
+void PianoWindow::playNote(int note, int channel, bool pressed) {
     if (!midiOut || !midiOut->isConnected()) return;
 
-    // Использование отдельного идентификатора для ударных
-    int noteId = (channel == 9) ? note + 128 : note;
+    int noteId = (channel == 9) ? note + 128 : note; // Отдельный идентификатор для ударных
 
     if (pressed) {
         if (!activeNotes.value(noteId, false)) {
@@ -543,7 +422,7 @@ void PianoWindow::on_infoButton_clicked()
     textEdit->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     textEdit->setWordWrapMode(QTextOption::WordWrap);
 
-    layout->addWidget(textEdit);// Текстовое поле в layout
+    layout->addWidget(textEdit); // Текстовое поле в layout
     infoDialog.exec();
 }
 

@@ -8,23 +8,16 @@ MainMenuWidget::MainMenuWidget(QWidget *parent)
     : QWidget(parent)
 {
     setFixedSize(1000, 800);
-
-    // Загружаем фон
-    backgroundImage.load(":/img/mainbackground.png");
+    backgroundImage.load(":/img/mainbackground.png"); // Загружаем фон
     imageHeight = backgroundImage.height();
 
     // Создаем кнопки
-
-    playerButton = new QPushButton( this);
-    pianoButton = new QPushButton( this);
+    playerButton = new QPushButton(this);
+    pianoButton = new QPushButton(this);
     setButtonStyle(playerButton);
     setButtonStyle(pianoButton);
     pianoButton->setIcon(QIcon(QString(":/img/pianobutton.png")));
     playerButton->setIcon(QIcon(QString(":/img/playerbutton.png")));
-
-    // Устанавливаем фиксированный размер кнопок
-    //playerButton->setFixedSize(400, 200);
-    //pianoButton->setFixedSize(400, 200);
 
     // Создаем вертикальный layout и добавляем кнопки одна под другой
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -32,16 +25,7 @@ MainMenuWidget::MainMenuWidget(QWidget *parent)
     mainLayout->addWidget(playerButton, 0, Qt::AlignCenter);
     mainLayout->addSpacing(0);
     mainLayout->addWidget(pianoButton, 0, Qt::AlignCenter);
-    //mainLayout->addStretch();
 
-    // УДАЛЯЕМ весь код с QHBoxLayout - он нам не нужен!
-    // Размещаем кнопки по центру
-    // QHBoxLayout *buttonLayout = new QHBoxLayout();
-    // buttonLayout->addWidget(playerButton);
-    // buttonLayout->addWidget(pianoButton);
-    // buttonLayout->setAlignment(Qt::AlignCenter);
-
-    // ПОДКЛЮЧАЕМ ВРУЧНУЮ - без автоматических имен
     connect(playerButton, &QPushButton::clicked, this, [this]() {
         emit playerButtonClicked();
     });
@@ -50,7 +34,7 @@ MainMenuWidget::MainMenuWidget(QWidget *parent)
         emit pianoButtonClicked();
     });
 
-    // Настраиваем таймеры...
+    // Настраиваем таймеры
     scrollTimer = new QTimer(this);
     connect(scrollTimer, &QTimer::timeout, this, &MainMenuWidget::updateBackground);
     scrollTimer->start(60);
@@ -96,9 +80,6 @@ void MainMenuWidget::paintEvent(QPaintEvent *event)
     painter.drawPixmap(0, y2, width(), imageHeight, backgroundImage);
 }
 
-// Остальные методы (updateBackground, createBubbles, moveNotes, createBigBubbles)
-// копируем из MainMenuWidget.cpp без изменений
-
 void MainMenuWidget::updateBackground()
 {
     scrollPosition = (scrollPosition + 30) % imageHeight;
@@ -107,19 +88,12 @@ void MainMenuWidget::updateBackground()
 
 void MainMenuWidget::createBubbles()
 {
-
-    // Случайное количество пузырьков в группе (1-5)
-    int bubbleCount = QRandomGenerator::global()->bounded(1, 6);
+    int bubbleCount = QRandomGenerator::global()->bounded(1, 6); // Случайное количество пузырьков в группе
 
     for (int i = 0; i < bubbleCount; ++i) {
-        // Случайный размер от 8 до 30 пикселей (еще меньше)
-        int size = QRandomGenerator::global()->bounded(8, 31);
-
-        // Случайная позиция X по всей горизонтали (0 до 1000)
-        int xPos = QRandomGenerator::global()->bounded(0, 1001 - size);
-
-        // Случайная скорость взлета (1-3 пикселя за кадр)
-        int speed = QRandomGenerator::global()->bounded(1, 4);
+        int size = QRandomGenerator::global()->bounded(8, 31); // Случайный размер от 8 до 30 пикселей
+        int xPos = QRandomGenerator::global()->bounded(0, 1001 - size); // Случайная позиция X по всей горизонтали
+        int speed = QRandomGenerator::global()->bounded(1, 4); // Случайная скорость взлета (1-3 пикселя за кадр)
 
         // Создаем прозрачный кружочек
         QLabel *bubble = new QLabel(this);
@@ -138,12 +112,10 @@ void MainMenuWidget::createBubbles()
         painter.end();
 
         bubble->setPixmap(bubblePixmap);
-        // Начинаем снизу экрана (взлетаем вверх)
-        bubble->setGeometry(xPos, 800, size, size);
+        bubble->setGeometry(xPos, 800, size, size); // Начинаем снизу экрана
         bubble->show();
 
-        // Сохраняем пузырек и его скорость (отрицательная для движения вверх)
-        bubbles.append(bubble);
+        bubbles.append(bubble); // Сохраняем пузырек
         bubbleSpeeds.append(-speed); // Отрицательная скорость для движения вверх
     }
 }
@@ -247,9 +219,9 @@ void MainMenuWidget::createBigBubbles()
 void MainMenuWidget::setButtonStyle(QPushButton *button){
     QString buttonStyle =
         "QPushButton {"
-        "    background-color: transparent;"  // Полупрозрачный белый фонrgba(255, 255, 255, 150)
+        "    background-color: transparent;"  // Полупрозрачный белый фон rgba(255, 255, 255, 150)
         "border: none;"
         "}";
-    button->setIconSize(QSize(400, 400));  // Уменьшаем размер иконки
+    button->setIconSize(QSize(400, 400));
     button->setStyleSheet(buttonStyle);
 }

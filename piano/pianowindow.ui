@@ -64,7 +64,7 @@
     </property>
     <property name="icon">
      <iconset resource="img.qrc">
-      <normaloff>:/img/pianohome.png</normaloff>:/img/pianohome.png</iconset>
+      <normaloff>:/img/piano/home.png</normaloff>:/img/piano/home.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -95,7 +95,7 @@
     </property>
     <property name="icon">
      <iconset resource="img.qrc">
-      <normaloff>:/img/pianoinfo.png</normaloff>:/img/pianoinfo.png</iconset>
+      <normaloff>:/img/piano/info.png</normaloff>:/img/piano/info.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -151,10 +151,10 @@
         <string notr="true">#c4 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #c4:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }
 
 /*#c4{
@@ -174,7 +174,7 @@ background-color: rgb(180, 180, 180);
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="img.qrc">
+        <iconset>
          <normaloff>:/img/white_up.png</normaloff>:/img/white_up.png</iconset>
        </property>
        <property name="iconSize">
@@ -209,10 +209,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#d4 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #d4:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -250,10 +250,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#e4 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #e4:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -288,10 +288,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#f4 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #f4:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -326,10 +326,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#g4 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #g4:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -364,10 +364,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#a4 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #a4:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -402,10 +402,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#b4 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #b4:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -446,10 +446,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#c5 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #c5:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -484,10 +484,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#d5 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #d5:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -522,10 +522,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#e5 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #e5:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -560,10 +560,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#f5 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #f5:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -598,10 +598,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#g5 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #g5:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -636,10 +636,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#a5 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #a5:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -674,10 +674,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#b5 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #b5:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -718,10 +718,10 @@ background-color: rgb(180, 180, 180);
         <string notr="true">#c6 {
     background: transparent;
     border: none;
-    icon: url(:/img/white_up.png);
+    icon: url(:/img/piano/white_up.png);
 }
 #c6:pressed {
-   icon: url(:/img/white_down.png);
+   icon: url(:/img/piano/white_down.png);
 }</string>
        </property>
        <property name="text">
@@ -753,7 +753,7 @@ background-color: rgb(180, 180, 180);
      <string notr="true">#bassDrum {
     background: transparent;
     border: none;
-    icon: url(:/img/kick.png);
+    icon: url(:/img/piano/kick.png);
 }</string>
     </property>
     <property name="text">
@@ -779,7 +779,7 @@ background-color: rgb(180, 180, 180);
      <string notr="true">#floorTom {
     background: transparent;
     border: none;
-    icon: url(:/img/tom.png);
+    icon: url(:/img/piano/tom.png);
 }</string>
     </property>
     <property name="text">
@@ -805,7 +805,7 @@ background-color: rgb(180, 180, 180);
      <string notr="true">#highTom {
     background: transparent;
     border: none;
-    icon: url(:/img/tom.png);
+    icon: url(:/img/piano/tom.png);
 }</string>
     </property>
     <property name="text">
@@ -831,7 +831,7 @@ background-color: rgb(180, 180, 180);
      <string notr="true">#midTom {
     background: transparent;
     border: none;
-    icon: url(:/img/tom.png);
+    icon: url(:/img/piano/tom.png);
 }</string>
     </property>
     <property name="text">
@@ -857,7 +857,7 @@ background-color: rgb(180, 180, 180);
      <string notr="true">#snareDrum {
     background: transparent;
     border: none;
-    icon: url(:/img/tom.png);
+    icon: url(:/img/piano/tom.png);
 }</string>
     </property>
     <property name="text">
@@ -883,7 +883,7 @@ background-color: rgb(180, 180, 180);
      <string notr="true">#crashCymbal2 {
     background: transparent;
     border: none;
-    icon: url(:/img/cymbal.png);
+    icon: url(:/img/piano/cymbal.png);
 }</string>
     </property>
     <property name="text">
@@ -909,7 +909,7 @@ background-color: rgb(180, 180, 180);
      <string notr="true">#rideCymbal {
     background: transparent;
     border: none;
-    icon: url(:/img/cymbal.png);
+    icon: url(:/img/piano/cymbal.png);
 }</string>
     </property>
     <property name="text">
@@ -935,7 +935,7 @@ background-color: rgb(180, 180, 180);
      <string notr="true">#crashCymbal1 {
     background: transparent;
     border: none;
-    icon: url(:/img/cymbal.png);
+    icon: url(:/img/piano/cymbal.png);
 }</string>
     </property>
     <property name="text">
@@ -961,7 +961,7 @@ background-color: rgb(180, 180, 180);
      <string notr="true">#hiHat {
     background: transparent;
     border: none;
-    icon: url(:/img/cymbal.png);
+    icon: url(:/img/piano/cymbal.png);
 }</string>
     </property>
     <property name="text">
@@ -999,10 +999,10 @@ background-color: rgb(180, 180, 180);
      <string notr="true">#c_4 {
     background: transparent;
     border: none;
-    icon: url(:/img/black_up.png);
+    icon: url(:/img/piano/black_up.png);
 }
 #c_4:pressed {
-   icon: url(:/img/black_down.png);
+   icon: url(:/img/piano/black_down.png);
 }
 
 /*#c_4{
@@ -1053,10 +1053,10 @@ background-color: rgb(0, 0, 0);
      <string notr="true">#d_4 {
     background: transparent;
     border: none;
-    icon: url(:/img/black_up.png);
+    icon: url(:/img/piano/black_up.png);
 }
 #d_4:pressed {
-   icon: url(:/img/black_down.png);
+   icon: url(:/img/piano/black_down.png);
 }</string>
     </property>
     <property name="text">
@@ -1094,10 +1094,10 @@ background-color: rgb(0, 0, 0);
      <string notr="true">#f_4 {
     background: transparent;
     border: none;
-    icon: url(:/img/black_up.png);
+    icon: url(:/img/piano/black_up.png);
 }
 #f_4:pressed {
-   icon: url(:/img/black_down.png);
+   icon: url(:/img/piano/black_down.png);
 }</string>
     </property>
     <property name="text">
@@ -1135,10 +1135,10 @@ background-color: rgb(0, 0, 0);
      <string notr="true">#g_4 {
     background: transparent;
     border: none;
-    icon: url(:/img/black_up.png);
+    icon: url(:/img/piano/black_up.png);
 }
 #g_4:pressed {
-   icon: url(:/img/black_down.png);
+   icon: url(:/img/piano/black_down.png);
 }</string>
     </property>
     <property name="text">
@@ -1179,10 +1179,10 @@ background-color: rgb(0, 0, 0);
      <string notr="true">#a_4 {
     background: transparent;
     border: none;
-    icon: url(:/img/black_up.png);
+    icon: url(:/img/piano/black_up.png);
 }
 #a_4:pressed {
-   icon: url(:/img/black_down.png);
+   icon: url(:/img/piano/black_down.png);
 }</string>
     </property>
     <property name="text">
@@ -1223,10 +1223,10 @@ background-color: rgb(0, 0, 0);
      <string notr="true">#c_5 {
     background: transparent;
     border: none;
-    icon: url(:/img/black_up.png);
+    icon: url(:/img/piano/black_up.png);
 }
 #c_5:pressed {
-   icon: url(:/img/black_down.png);
+   icon: url(:/img/piano/black_down.png);
 }
 </string>
     </property>
@@ -1265,10 +1265,10 @@ background-color: rgb(0, 0, 0);
      <string notr="true">#d_5 {
     background: transparent;
     border: none;
-    icon: url(:/img/black_up.png);
+    icon: url(:/img/piano/black_up.png);
 }
 #d_5:pressed {
-   icon: url(:/img/black_down.png);
+   icon: url(:/img/piano/black_down.png);
 }</string>
     </property>
     <property name="text">
@@ -1306,10 +1306,10 @@ background-color: rgb(0, 0, 0);
      <string notr="true">#f_5 {
     background: transparent;
     border: none;
-    icon: url(:/img/black_up.png);
+    icon: url(:/img/piano/black_up.png);
 }
 #f_5:pressed {
-   icon: url(:/img/black_down.png);
+   icon: url(:/img/piano/black_down.png);
 }</string>
     </property>
     <property name="text">
@@ -1347,10 +1347,10 @@ background-color: rgb(0, 0, 0);
      <string notr="true">#g_5 {
     background: transparent;
     border: none;
-    icon: url(:/img/black_up.png);
+    icon: url(:/img/piano/black_up.png);
 }
 #g_5:pressed {
-   icon: url(:/img/black_down.png);
+   icon: url(:/img/piano/black_down.png);
 }</string>
     </property>
     <property name="text">
@@ -1391,10 +1391,10 @@ background-color: rgb(0, 0, 0);
      <string notr="true">#a_5 {
     background: transparent;
     border: none;
-    icon: url(:/img/black_up.png);
+    icon: url(:/img/piano/black_up.png);
 }
 #a_5:pressed {
-   icon: url(:/img/black_down.png);
+   icon: url(:/img/piano/black_down.png);
 }</string>
     </property>
     <property name="text">
@@ -1429,7 +1429,7 @@ background-color: rgb(0, 0, 0);
     </property>
     <property name="icon">
      <iconset resource="img.qrc">
-      <normaloff>:/img/metronome.png</normaloff>:/img/metronome.png</iconset>
+      <normaloff>:/img/piano/metronome.png</normaloff>:/img/piano/metronome.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -1441,10 +1441,10 @@ background-color: rgb(0, 0, 0);
    <widget class="QSlider" name="bpmSlider">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>700</x>
       <y>270</y>
-      <width>251</width>
-      <height>18</height>
+      <width>241</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -1574,6 +1574,24 @@ QComboBox QAbstractItemView {
     </property>
     <property name="value">
      <number>4</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>440</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: transparent;
+font-weight: bold;
+font-size: 22px;</string>
+    </property>
+    <property name="text">
+     <string>Made by Nadzeya Yarmolik ;)</string>
     </property>
    </widget>
   </widget>

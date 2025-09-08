@@ -43,20 +43,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-protected:
-    //void keyPressEvent(QKeyEvent *event) override;
-    //void paintEvent(QPaintEvent *event) override;
-    //void resizeEvent(QResizeEvent *event) override;
-    //bool eventFilter(QObject *watched, QEvent *event) override; // Добавляем фильтр событий
-
 private slots:
-    // void on_playerButton_clicked();
-    // void on_pianoButton_clicked();
-    // void updateBackground();
-    // void createBubbles();
-    // void moveNotes();
-    // void createBigBubbles();
-
     void showMainMenu();
     void showPlayerWindow();
     void showPianoWindow();
@@ -76,23 +63,6 @@ private:
 
     bool isPlayerWindowActive=0;
     bool isPianoWindowActive=0;
-
-    //PlayerWindow *playerWindow = nullptr;
-    //PianoWindow *pianoWindow = nullptr;
-
-    // QPixmap backgroundImage;
-    // QTimer *scrollTimer;
-    // int scrollPosition = 0;
-    // int imageHeight;
-
-    // QTimer *m_createTimer;
-    // QTimer *m_moveTimer;
-    // QList<QLabel*> m_bubbles;
-    // QList<int> m_bubbleSpeeds;
-
-    // QTimer *m_bigBubbleTimer;
-    // QList<QLabel*> m_bigBubbles;
-    // QList<int> m_bigBubbleSpeeds;
 };
 
 #endif // MAINWINDOW_H

@@ -156,9 +156,10 @@ PlayerWindow::PlayerWindow(QMidiOut* mainMidiOut, QWidget *parent)
         //начальные значения всех каналов
         for (int i = 0; i < 16; ++i) {
             midiOut->pitchWheel(i, 8192); // pitch bend (0-16383, центр - 8192 )
-            midiOut->controlChange(i, 1, 0); //modulation wheel
-            midiOut->controlChange(i, 7, 100); // громкости все на 100
-            midiOut->controlChange(i, 121, 0); // Все контроллеры выключены
+            HelperClass::sendControlChange(i, 1, 0); //modulation wheel
+            HelperClass::sendControlChange(i, 7, 100); // громкости все на 100
+            HelperClass::sendControlChange(i, 121, 0); // Все контроллеры выключены
+
         }
     }
 
@@ -415,13 +416,13 @@ void PlayerWindow::updateVolume(int volume)
         // только для solo канала громкость
         int individualVolume = m_channelVolumes[m_soloChannel];
         int finalVolume = (individualVolume * midiMasterVolume) / 100;
-        midiOut->controlChange(m_soloChannel, 7, finalVolume);
+        HelperClass::sendControlChange(m_soloChannel, 7, finalVolume);
     } else {
         // для всех каналов громкость
         for (int channel = 0; channel < 16; ++channel) {
             int individualVolume = m_channelVolumes[channel];
             int finalVolume = (individualVolume * midiMasterVolume) / 100;
-            midiOut->controlChange(channel, 7, finalVolume);
+            HelperClass::sendControlChange(channel, 7, finalVolume);
         }
     }
 }
@@ -526,8 +527,7 @@ void PlayerWindow::processMidiEvent(QMidiEvent* event)
         channelInstruments[channel] = event->number();  // Сохр инструмент
         break;
 
-    default:
-        //все остальные MIDI-события
+    default: //все остальные MIDI-события
         midiOut->sendEvent(*event);
         break;
     }
@@ -701,14 +701,12 @@ void PlayerWindow::seekToPosition(int position)
     QVector<int> savedPreSoloVolumes = m_preSoloVolumes;
 
     // стоп все ноты если воспроизведение активно или есть активные ноты
-    if (is_playing || !activeNotes.isEmpty()) {
+    if (is_playing || !activeNotes.isEmpty())
         resetAllNotes();
-    }
 
     // Сброс pitch bend для всех каналов
-    for (int ch = 0; ch < 16; ++ch) {
+    for (int ch = 0; ch < 16; ++ch)
         midiOut->pitchWheel(ch, 0x2000);
-    }
 
     // Устанавливаем новую позицию воспроизведения
     currentPlayPos = (position * totalDur) / 1000;
@@ -758,9 +756,8 @@ void PlayerWindow::seekToPosition(int position)
     ui->progressSlider->setValue(position);
 
     // Обновляем позицию паузы если игра была на паузе
-    if (is_paused) {
+    if (is_paused)
         m_pausePosition = currentPlayPos;
-    }
 }
 
 void PlayerWindow::pausePlay()
@@ -839,8 +836,6 @@ void PlayerWindow::stopPlay(bool resetPos)
 void PlayerWindow::updateButtonStates()
 {
     bool hasFiles = !Files.empty();
-    // bool isAtStart = (currentFileIndex <= 0);
-    // bool isAtEnd = (currentFileIndex >= Paths.size() - 1);
     bool isFileSelected = (currentFileIndex >= 0); // Файл выбран
 
     ui->pauseButton->setEnabled(hasFiles);
@@ -875,6 +870,7 @@ void PlayerWindow::updatePlay()
 }
 
 void PlayerWindow::on_homeButton_clicked(){
+    // Made by Nadzeya Yarmolik ;)
     emit homeButtonClicked();
     this->hide();}
 
@@ -931,19 +927,13 @@ void PlayerWindow::on_stopButton_clicked() {
 
 void PlayerWindow::on_volumeSlider_valueChanged(int value)
 {
-    // Если ползунок двигается не через mute то сбрасываем флаг mute
-    if (is_mute && value > 0) {
-        is_mute = false;
-
-        //ui->muteButton->setIcon(QIcon(QString(":/img/%1/volume.png").arg(themeName)));
-    }
+    if (is_mute && value > 0) is_mute = false;
 
     if (!is_mute) {
         updateVolume(value);  // новая громкость
         saved_volume = value; // Сохраняем значение
     }
 
-    // иконка
     QString themeName = getCurrentThemeName();
     QString iconName = (value == 0 || is_mute) ? "mute" : "volume";
     ui->muteButton->setIcon(QIcon(QString(":/img/%1/%2.png").arg(themeName, iconName)));
@@ -969,21 +959,17 @@ void PlayerWindow::on_muteButton_clicked()
     is_mute = !is_mute;  // Переключаем состояние
 
     if (is_mute) {
-        // Сохраняем текущее значение перед mute
-        saved_volume = ui->volumeSlider->value();
-        // Устанавливаем ползунок в 0
-        ui->volumeSlider->setValue(0);
+        saved_volume = ui->volumeSlider->value(); // Сохраняем текущее значение перед mute
+        ui->volumeSlider->setValue(0); // Устанавливаем ползунок в 0
         updateVolume(0);  // Применяем нулевую громкость
     } else {
-        // Восстанавливаем сохр значение
-        ui->volumeSlider->setValue(saved_volume);
+        ui->volumeSlider->setValue(saved_volume); // Восстанавливаем сохр значение
         updateVolume(saved_volume);  // Применяем сохр громкость
     }
 
-    // Обновляем иконку сразу
     QString themeName = getCurrentThemeName();
     QString iconName = is_mute ? "mute" : "volume";
-    ui->muteButton->setIcon(QIcon(QString(":/img/%1/%2.png").arg(themeName).arg(iconName)));
+    ui->muteButton->setIcon(QIcon(QString(":/img/%1/%2.png").arg(themeName, iconName)));
 }
 
 void PlayerWindow::on_settingsButton_clicked()
@@ -1414,22 +1400,25 @@ QString PlayerWindow::setSliderStyleSheet() const
             "QSlider::sub-page:horizontal { background: #00B6D3; }";
     }
 
-    QString baseSliderStyle =
-        "QSlider {"
-        "    min-height: 30px; max-height: 30px; padding: 0px; margin: 0px;"
-        "}"
-        "QSlider::groove:horizontal {"
-        "    height: 6px; border-radius: 3px;"
-        "}"
-        "QSlider::sub-page:horizontal {"
-        "    height: 6px; border-radius: 3px;"
-        "}"
-        "QSlider::handle:horizontal {"
-        "    width: 28px; height: 28px; margin: -11px 0;"
-        "    background: transparent; border: none;"
-        "    image: url(:/img/" + themeName + "/handle.png);"
-        "    subcontrol-origin: margin; subcontrol-position: center center;"
-        "}";
+    QString baseSliderStyle = QString(R"(
+    QSlider {
+        min-height: 30px; max-height: 30px; padding: 0px; margin: 0px;
+    }
+    QSlider::groove:horizontal {
+        height: 6px; border-radius: 3px;
+    }
+    QSlider::sub-page:horizontal {
+        height: 6px; border-radius: 3px;
+    }
+    QSlider::handle:horizontal {
+        width: 28px; height: 28px;
+        margin: -11px 0;
+        background: transparent;
+        border: none;
+        image: url(:/img/%1/handle.png);
+        subcontrol-origin: margin;
+        subcontrol-position: center center;
+    } )").arg(themeName);
 
     return baseSliderStyle + themeColors;
 }
@@ -1454,22 +1443,14 @@ void PlayerWindow::resetMidiChannels()
     if (midiOut && midiOut->isConnected()) {
         // Сброс всех контроллеров на всех каналах
         for (int channel = 0; channel < 16; ++channel) {
-            // Reset Pitch Bend to center
-            midiOut->controlChange(channel, 1, 0);// Reset Modulation to 0
-            midiOut->controlChange(channel, 7, 100);// Reset Volume to default
-            midiOut->controlChange(channel, 10, 64);// Reset Pan to center
-            midiOut->controlChange(channel, 123, 0);// All Notes Off (123)
-            midiOut->controlChange(channel, 120, 0);// All Sound Off (120)
-            midiOut->controlChange(channel, 121, 0); // Reset All Controllers
-            midiOut->controlChange(channel, 123, 0); // All Notes Off
             //Сброс питча и диапазона
             midiOut->pitchWheel(channel, 0x2000);
-            midiOut->controlChange(channel, 101, 0); //НЕ УБИРАТЬ НА НИХ
-            midiOut->controlChange(channel, 100, 0); //ДЕРЖИТСЯ ПИТЧ
-            midiOut->controlChange(channel, 6, 2);
-            midiOut->controlChange(channel, 38, 0);
-            midiOut->controlChange(channel, 101, 127);
-            midiOut->controlChange(channel, 100, 127);
+            HelperClass::sendControlChange(channel, 101, 0); //НЕ УБИРАТЬ НА НИХ
+            HelperClass::sendControlChange(channel, 100, 0); //ДЕРЖИТСЯ ПИТЧ
+            HelperClass::sendControlChange(channel, 6, 2);
+            HelperClass::sendControlChange(channel, 38, 0);
+            HelperClass::sendControlChange(channel, 101, 127);
+            HelperClass::sendControlChange(channel, 100, 127);
         }
     }
 }
@@ -1481,7 +1462,7 @@ void PlayerWindow::loadChannelSettings()
         // Добавляем проверку на границы
         if (channel >= 0 && channel < m_channelVolumes.size()) {
             m_channelVolumes[channel] = settings.value(
-                                                    QString("channel_%1_volume").arg(channel), 100).toInt();
+                QString("channel_%1_volume").arg(channel), 100).toInt();
         }
     }
 
@@ -1490,7 +1471,7 @@ void PlayerWindow::loadChannelSettings()
         for (int channel = 0; channel < 16; ++channel) {
             if (channel >= 0 && channel < m_channelVolumes.size()) {
                 int finalVolume = (m_channelVolumes[channel] * m_masterVolume * 1.27) / 100;
-                midiOut->controlChange(channel, 7, finalVolume);
+                HelperClass::sendControlChange(channel, 7, finalVolume);
             }
         }
     }
@@ -1508,7 +1489,7 @@ void PlayerWindow::resetAllChannelVolumes() {
         // Применяем с учетом мастер-громкости
         if (midiOut && midiOut->isConnected()) {
             int finalVolume = (100 * m_masterVolume * 1.27) / 100;
-            midiOut->controlChange(i, 7, finalVolume);
+            HelperClass::sendControlChange(i, 7, finalVolume);
         }
     }
 }
@@ -1547,7 +1528,7 @@ void PlayerWindow::setChannelVolume(int channel, int volume) {
     if (midiOut && midiOut->isConnected()) {
         // Применяем мастер-громкость и преобразуем в MIDI диапазон (0-127)
         int finalVolume = (volume * m_masterVolume * 1.27) / 100;
-        midiOut->controlChange(channel, 7, finalVolume);
+        HelperClass::sendControlChange(channel, 7, finalVolume);
     }
 }
 
@@ -1787,8 +1768,7 @@ void PlayerWindow::setPlaybackSpeed(PlaybackSpeed speed)
     bool wasPlaying = is_playing;
     bool wasPaused = is_paused;
 
-    // Останавливаем таймер если играет
-    if (is_playing) playTimer.stop();
+    if (is_playing) playTimer.stop(); // Останавливаем таймер если играет
 
     m_playbackSpeed = speed;
 
@@ -1856,13 +1836,13 @@ void PlayerWindow::resetMidiState()
     if (midiOut && midiOut->isConnected()) {
         for (int channel = 0; channel < 16; ++channel) {
             // Reset All Controllers (121)
-            midiOut->controlChange(channel, 121, 0);
-            midiOut->pitchWheel(channel, 8192);// Pitch Bend reset to center (8192 = center)
-            midiOut->controlChange(channel, 1, 0);// Modulation wheel reset
-            midiOut->controlChange(channel, 7, 100);// Volume reset
-            midiOut->controlChange(channel, 10, 64);// Pan reset to center
-            midiOut->controlChange(channel, 123, 0);// All Notes Off
-            midiOut->controlChange(channel, 120, 0);// All Sound Off
+            HelperClass::sendControlChange(channel, 121, 0);
+            //midiOut->pitchWheel(channel, 8192);// Pitch Bend reset to center (8192 = center)
+            HelperClass::sendControlChange(channel, 1, 0);// Modulation wheel reset
+            HelperClass::sendControlChange(channel, 7, 100);// Volume reset
+            HelperClass::sendControlChange(channel, 10, 64);// Pan reset to center
+            HelperClass::sendControlChange(channel, 123, 0);// All Notes Off
+            HelperClass::sendControlChange(channel, 120, 0);// All Sound Off
         }
     }
 

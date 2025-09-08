@@ -49,14 +49,22 @@ private:
     Ui::PianoWindow *ui;
     QMidiOut *midiOut; // MIDI выход
     HelperClass* helper; // Вспомогательный класс
+
     int volume = 100; // Текущая громкость
     int currentInstrument = 0; // Текущий инструмент
     int currentOctave = 4; // Текущая октава
     int currentVelocity = 64; // Скорость нажатия
 
     QVector<QPushButton*> pianoKeys; // Все клавиши пианино
-    QVector<int> keyScanCodes; // Scan codes клавиш
-    QVector<int> keyQtKeys; // Qt key codes клавиш
+    const QVector<int> pianoScanCodes = { // Scan codes клавиш
+            0x2C, 0x1F, 0x2D, 0x20, 0x2E, 0x2F, 0x22, 0x30,
+            0x23, 0x31, 0x24, 0x32, 0x33, 0x03, 0x11, 0x04,
+            0x12, 0x13, 0x06, 0x14, 0x07, 0x15, 0x08, 0x16, 0x17};
+    const QVector<int> pianoKeyKeys = { // Qt key codes клавиш
+        Qt::Key_Z, Qt::Key_S, Qt::Key_X, Qt::Key_D, Qt::Key_C,
+        Qt::Key_V, Qt::Key_G, Qt::Key_B, Qt::Key_H, Qt::Key_N, Qt::Key_J, Qt::Key_M,
+        Qt::Key_Comma, Qt::Key_2, Qt::Key_W, Qt::Key_3, Qt::Key_E,
+        Qt::Key_R, Qt::Key_5, Qt::Key_T, Qt::Key_6, Qt::Key_Y, Qt::Key_7, Qt::Key_U, Qt::Key_I };
 
     void setupPianoKeys(); // Настройка клавиш пианино
 

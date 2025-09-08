@@ -20,18 +20,8 @@ public:
     static void setMidiOut(QMidiOut* midiDevice); // Новый метод для установки MIDI
 
     static void sendNoteOn(int note, int channel = 0, int velocity = 64);
-    // {
-    //     if (!midiOut || !midiOut->isConnected()) {
-    //         midiOut->noteOn(note, channel, velocity);
-    //     }
-    // }
 
     static void sendNoteOff(int note, int channel = 0);
-    // {
-    //     if (!midiOut || !midiOut->isConnected()) {
-    //         midiOut->noteOff(note, channel);
-    //     }
-    // }
 
     static const QStringList instruments;
 
@@ -39,17 +29,6 @@ public:
 
     static void sendControlChange(int channel, int controller, int value);
 
-    static void stopAllNotes() {
-        if (midiOut && midiOut->isConnected()) {
-            midiOut->stopAll();
-        }
-    }
-
-    static void stopAllNotes(int channel) {
-        if (midiOut && midiOut->isConnected()) {
-            midiOut->stopAll(channel);
-        }
-    }
 private:
     // Хранилище исходных размеров иконок для всех кнопок
     // Ключ - указатель на кнопку, значение - исходный размер иконки

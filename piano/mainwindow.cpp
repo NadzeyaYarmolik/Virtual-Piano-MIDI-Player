@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setFixedSize(1000, 800); // Используем this->
+    this->setFixedSize(1000, 800);
 
     // Инициализируем указатели
     playerWindow.reset();
@@ -24,26 +24,19 @@ MainWindow::MainWindow(QWidget *parent)
     // Инициализируем MIDI
     midiOut = new QMidiOut();
     QMap<QString, QString> devicesMap = QMidiOut::devices();
-    if (!devicesMap.isEmpty()) {
+    if (!devicesMap.isEmpty())
         midiOut->connect(devicesMap.keys().first());
-    }
 
-    // Устанавливаем MIDI устройство в HelperClass
-    HelperClass::setMidiOut(midiOut);
+    HelperClass::setMidiOut(midiOut); // Устанавливаем MIDI устройство в HelperClass
 
-    // Подключаем сигналы от главного меню - исправленный connect
+    // Подключаем сигналы от главного меню
     connect(mainMenu, &MainMenuWidget::playerButtonClicked,
             this, &MainWindow::showPlayerWindow);
     connect(mainMenu, &MainMenuWidget::pianoButtonClicked,
             this, &MainWindow::showPianoWindow);
-
-
-
-
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     // Очищаем умные указатели (вызовут деструкторы)
     playerWindow.reset();
     pianoWindow.reset();
@@ -61,7 +54,8 @@ MainWindow::~MainWindow()
     }
 
     // Удаляем MIDI
-    if (midiOut) {
+    if (midiOut && midiOut->isConnected()) {
+        midiOut->disconnect();
         delete midiOut;
         midiOut = nullptr;
     }
@@ -69,8 +63,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::showPlayerWindow()
-{
+void MainWindow::showPlayerWindow() {
     cleanupCurrentWindow();
 
     if (!isPlayerWindowActive) {
@@ -78,13 +71,10 @@ void MainWindow::showPlayerWindow()
 
         // ПРАВИЛЬНОЕ подключение сигналов
         connect(playerWindow, &PlayerWindow::homeButtonClicked, this, [this, playerWindow]() {
-            // Переключаемся на главное меню
-            stackedWidget->setCurrentWidget(mainMenu);
+            stackedWidget->setCurrentWidget(mainMenu); // Переключаемся на главное меню
+            isPlayerWindowActive = false; // Устанавливаем флаг
 
-            // Устанавливаем флаг
-            isPlayerWindowActive = false;
-
-            // Удаляем окно (опционально)
+            // Удаляем окно
             stackedWidget->removeWidget(playerWindow);
             playerWindow->deleteLater();
         });
@@ -95,8 +85,7 @@ void MainWindow::showPlayerWindow()
     }
 }
 
-void MainWindow::showPianoWindow()
-{
+void MainWindow::showPianoWindow() {
     cleanupCurrentWindow();
 
     if (!isPianoWindowActive) {
@@ -115,18 +104,13 @@ void MainWindow::showPianoWindow()
     }
 }
 
-void MainWindow::showMainMenu()
-{
+void MainWindow::showMainMenu() {
     cleanupCurrentWindow();
     stackedWidget->setCurrentWidget(mainMenu);
 }
 
-void MainWindow::cleanupCurrentWindow()
-{
+void MainWindow::cleanupCurrentWindow() {
     QWidget *currentWidget = stackedWidget->currentWidget();
-    if (currentWidget && currentWidget != mainMenu) {
-        // Не удаляем виджет здесь, просто переключаемся
-        // Удаление будет происходить через сигнал destroyed
-        stackedWidget->setCurrentWidget(mainMenu);
-    }
+    if (currentWidget && currentWidget != mainMenu)
+        stackedWidget->setCurrentWidget(mainMenu); // Просто переключаемся
 }

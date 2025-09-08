@@ -39,7 +39,6 @@ void ChannelDialog::setChannel(int channel)
 {
     m_channel = channel;
 
-    // Текущая громкость канала из плеера
     int currentVolume = m_parentPlayer->getChannelVolume(channel);
     m_savedVolume = currentVolume;       // Основное значение на случай отмены
     m_tempSavedVolume = currentVolume;   // Временное значение для mute/unmute в пределах диалога
@@ -80,22 +79,15 @@ void ChannelDialog::on_muteButton_clicked()
     ui->muteButton->setIcon(QIcon(QString(":/img/%1/%2.png").arg(themeName, iconName)));
 }
 
-void ChannelDialog::on_volumeSlider_valueChanged(int value)
-{
-    // Mute + движение слайдером -> unmute
-    if (m_isMute && value > 0) {
+void ChannelDialog::on_volumeSlider_valueChanged(int value) {
+    if (m_isMute && value > 0) // Mute + движение слайдером -> unmute
         m_isMute = false;
-    }
 
-    // Громкость в плеер
-    if (m_parentPlayer) {
+    if (m_parentPlayer) // Громкость в плеер
         m_parentPlayer->setChannelVolume(m_channel, value);
-    }
 
-    // Не mute + ненулевая громкость -> сохранить temp
-    if (!m_isMute && value > 0) {
+    if (!m_isMute && value > 0) // Не mute + ненулевая громкость -> сохранить temp
         m_tempSavedVolume = value;
-    }
 
     // Иконка
     QString themeName = m_parentPlayer ? m_parentPlayer->getCurrentThemeName() : "modern";
@@ -106,7 +98,6 @@ void ChannelDialog::on_volumeSlider_valueChanged(int value)
 void ChannelDialog::applyThemeStyle()
 {
     if (m_parentPlayer) {
-        // Стиль слайдера
         QString sliderStyle = m_parentPlayer->setSliderStyleSheet();
         ui->volumeSlider->setStyleSheet(sliderStyle);
 
@@ -115,7 +106,6 @@ void ChannelDialog::applyThemeStyle()
         ui->volumeSlider->style()->polish(ui->volumeSlider);
         ui->volumeSlider->update();
 
-        // Анимация
         HelperClass::setupButtonAnimation(ui->muteButton, ui->muteButton->iconSize(), 100);
     }
 }
@@ -135,8 +125,7 @@ void ChannelDialog::reject() {
 void ChannelDialog::restoreInitialVolume() {
     if (!m_parentPlayer || m_channel == -1) return;
 
-    // Слайдер в изначальное значение
-    ui->volumeSlider->setValue(m_initialVolume);
+    ui->volumeSlider->setValue(m_initialVolume); // Слайдер в изначальное значение
 
     // Начальное значение громкости канала через плеер
     updateChannelVolume(m_initialVolume);
@@ -149,8 +138,6 @@ void ChannelDialog::restoreInitialVolume() {
 }
 
 void ChannelDialog::updateChannelVolume(int volume) {
-    // Передача команды установки громкости плееру,
-    // Он преобразует значение 0-100 в MIDI-формат 0-127
     if (!m_parentPlayer || m_channel == -1) return;
     m_parentPlayer->setChannelVolume(m_channel, volume);
 }
